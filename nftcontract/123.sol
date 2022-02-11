@@ -67,7 +67,7 @@ contract Auction is TheMonkeyKing{
         firstSaleTokenId=nftId._value;
         for(uint i=0;i<nftUriList.length;i++){
             _safeMint(address(this),nftId._value);
-            _setTokenURI(nftId._value,nftUriList[nftId._value]);
+            _setTokenURI(nftId._value,nftUriList[i]);
             nftId.increment();
         }
         emit teamMintNft(mintAmount,firstSaleTokenId);
@@ -138,6 +138,7 @@ contract Auction is TheMonkeyKing{
 }
 
 contract trade is TheMonkeyKing{
+    
     uint private tax=90;
     Auction public auction;
     /*address payable addr;*/
@@ -183,7 +184,7 @@ contract trade is TheMonkeyKing{
 
     function transferToMarket(uint tokenId,uint price)external {
         require(marketPauseStatus,"transferToMarket funtion has been closed");
-        require(auction.ownerOf(tokenId)==msg.sender,"you don't have this nft token");
+        //require(auction.ownerOf(tokenId)==msg.sender,"you don't have this nft token");
         bidPrice[tokenId]=price;
         require(bidPrice[tokenId]!=0,"price cannot be 0");
         sellerAddress[tokenId]=msg.sender;
