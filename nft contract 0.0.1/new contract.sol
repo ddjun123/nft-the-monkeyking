@@ -1,18 +1,17 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity ^0.8.2;
 
-import "@openzeppelin/contracts@4.4.2/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts@4.4.2/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts@4.4.2/security/Pausable.sol";
-import "@openzeppelin/contracts@4.4.2/access/Ownable.sol";
-import "@openzeppelin/contracts@4.4.2/token/ERC721/extensions/ERC721Burnable.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts@4.4.2/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 
-
-
-contract TMKNFT is ERC721, ERC721URIStorage, Pausable, Ownable, ERC721Burnable{
+contract TMKNFT is ERC721URIStorage, Pausable, Ownable, ERC721Burnable,ERC721Enumerable{
     
     using Counters for Counters.Counter;
     Counters.Counter private nftId;
@@ -28,10 +27,19 @@ contract TMKNFT is ERC721, ERC721URIStorage, Pausable, Ownable, ERC721Burnable{
     event _withdrawfunds(uint a,address b,address c,address d);
 
     /*erc721 token function*/
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(ERC721, ERC721Enumerable)
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
+    }
+
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
         internal
         whenNotPaused
-        override
+        override(ERC721, ERC721Enumerable)
     {
         super._beforeTokenTransfer(from, to, tokenId);
     }
